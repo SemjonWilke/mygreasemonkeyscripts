@@ -10,9 +10,11 @@ maybe = ["fleisch", "Fleisch", "Roulade", "roulade", "braten", "Braten", "würst
          "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse",
          "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle"]
 never = ["Seniorenportion", "Baguettes", "Dessert", "XXL", "Salat", "Krustenbrot", "Kalt", "Glas", "Mischbrot"]
+excludes = ["gebraten"]
 
 maybecol = "#eeee55" // yello
 nevercol = "#ff7744" // red
+excludecol = "#ffccff" // pink
 
 
 function isTextIn(mealparam, text) {
@@ -46,7 +48,11 @@ for (const element in collection) {
     
     mealtext = collection[element].getElementsByClassName("cBody grey")[0].childNodes[0].data.trim()
     
-    if (isTextIn(mealtext, maybe)) {
+    
+    if (isTextIn(mealtext, excludes)) {
+    	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = excludecol
+    	collection[element].getElementsByClassName("cBody grey")[0].style.backgroundColor = excludecol
+    } else if (isTextIn(mealtext, maybe)) {
     	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = maybecol
     	collection[element].getElementsByClassName("cBody grey")[0].style.backgroundColor = maybecol
     }
