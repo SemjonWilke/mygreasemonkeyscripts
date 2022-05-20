@@ -1,0 +1,54 @@
+// ==UserScript==
+// @name     Holzke Mittagessen
+// @version  1
+// @grant    none
+// @include  https://holzke-menue.de/de/speiseplan/erwachsenen-speiseplan.html*
+// ==/UserScript==
+
+maybe = ["fleisch", "Fleisch", "Roulade", "roulade", "braten", "Braten", "würstchen", "Würstchen", "Knacker", "knacker",
+         "con Carne", "Kassler", "kassler", "Jäger", "Jagd", "steak", "Steak", "Hähnchen", "Hühn", "Hahn",
+         "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse",
+         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle"]
+never = ["Seniorenportion", "Baguettes", "Dessert", "XXL", "Salat", "Krustenbrot", "Kalt", "Glas", "Mischbrot"]
+
+maybecol = "#eeee55" // yello
+nevercol = "#ff7744" // red
+
+
+function isTextIn(mealparam, text) {
+  result = false
+  
+  for (const meal in text) {
+    result = result || mealparam.includes(text[meal])
+    if (result) {
+      return result
+    }
+  }
+  
+  return result;
+}
+
+
+const collection = document.getElementsByClassName("articleGrid meal");
+removelist = []
+for (const element in collection) {
+  
+  if (!isNaN(element)) {
+    mealhead = collection[element].getElementsByClassName("cHead")[0].childNodes[0].childNodes[0].data.trim()
+
+    if (isTextIn(mealhead, never)) {
+    	//collection[element].remove();
+      removelist.push(element)
+    	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = nevercol
+    	collection[element].getElementsByClassName("cBody grey")[0].style.backgroundColor = nevercol
+      continue;
+    }
+    
+    mealtext = collection[element].getElementsByClassName("cBody grey")[0].childNodes[0].data.trim()
+    
+    if (isTextIn(mealtext, maybe)) {
+    	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = maybecol
+    	collection[element].getElementsByClassName("cBody grey")[0].style.backgroundColor = maybecol
+    }
+  }
+}
