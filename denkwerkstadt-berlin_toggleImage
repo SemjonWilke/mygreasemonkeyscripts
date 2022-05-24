@@ -1,0 +1,48 @@
+// ==UserScript==
+// @name     denkwerkstadt-berlin impressionen
+// @version  1
+// @grant    none
+// @include  http://www.denkwerkstadt-berlin.de/src/views/startseite.php#impressionen
+// ==/UserScript==
+
+modalhtml = document.createElement('div');
+imageshown = false;
+lastimage = null;
+
+
+function toggleImage() {
+  if (lastimage != null) {lastimage.style.filter = "grayscale(0%)"};
+  if (!imageshown || lastimage != this) {
+    lastimage = this;
+  	imageshown = true;
+    this.style.filter = "grayscale(100%)";
+    modalhtml.innerHTML   = '<br> 							\
+      <div id="show_image_popup">								\
+        <div id="image-show-area">							\
+          <img id="large-image" src="'+
+            this.src+'" alt="'+this.alt+
+            '" width="100%">										  \
+        </div>																	\
+      </div>';
+  } else {
+  	imageshown = false;
+		lastimage = null;
+    modalhtml.innerHTML = '';
+  }
+  
+  document.getElementById("impressionen").scrollIntoView({behavior: "smooth", block: "start"})//{behavior: "smooth", block: "start", inline: "nearest"});
+}
+
+
+impressionen = document.getElementById("impressionen");
+impressionen.append(modalhtml);
+
+images = document.getElementsByClassName('picture');
+images[0].style.maxHeight = "150px";
+images[0].style.overflowX = "scroll";
+images[0].style.overflowY = "hidden";
+images[0].style.whiteS
+
+for (let i = 0; i < images[0].childNodes.length; i++) {
+  images[0].childNodes[i].addEventListener("click", toggleImage);
+}
