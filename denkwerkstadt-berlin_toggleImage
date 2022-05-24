@@ -2,7 +2,7 @@
 // @name     denkwerkstadt-berlin impressionen
 // @version  1
 // @grant    none
-// @include  http://www.denkwerkstadt-berlin.de/src/views/startseite.php#impressionen
+// @include  http://www.denkwerkstadt-berlin.de/src/views/startseite.php*
 // ==/UserScript==
 
 modalhtml = document.createElement('div');
@@ -41,7 +41,7 @@ images = document.getElementsByClassName('picture');
 images[0].style.maxHeight = "150px";
 images[0].style.overflowX = "scroll";
 images[0].style.overflowY = "hidden";
-images[0].style.whiteS
+images[0].style.whiteSpace = "nowrap";
 
 for (let i = 0; i < images[0].childNodes.length; i++) {
   images[0].childNodes[i].addEventListener("click", toggleImage);
