@@ -6,9 +6,9 @@
 // ==/UserScript==
 
 maybe = ["fleisch", "Fleisch", "Roulade", "roulade", "braten", "Braten", "würstchen", "Würstchen", "Knacker", "knacker",
-         "con Carne", "Kassler", "kassler", "Jäger", "Jagd", "steak", "Steak", "Hähnchen", "Hühn", "Hahn",
-         "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse",
-         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle"]
+         "con Carne", "Kassler", "kassler", "Jäger", "Jagd", "steak", "Steak", "Hähnchen", "Hühn", "Hahn", "kalb", "Kalb",
+         "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse", "frikassee", "Frikassee",
+         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle", "Pulled Pork", "fisch", "Fisch"]
 never = ["Seniorenportion", "Baguettes", "Dessert", "XXL", "Salat", "Krustenbrot", "Kalt", "Glas", "Mischbrot"]
 excludes = ["gebraten"]
 
@@ -31,6 +31,11 @@ function isTextIn(mealparam, text) {
 }
 
 
+function getHolzkeToday(a, n) {
+  return ( Math.floor(Math.floor(Date.now() / 1000) / 86400) * 86400 ) - 7200
+}
+
+
 const collection = document.getElementsByClassName("articleGrid meal");
 removelist = []
 for (const element in collection) {
@@ -47,7 +52,6 @@ for (const element in collection) {
     }
     
     mealtext = collection[element].getElementsByClassName("cBody grey")[0].childNodes[0].data.trim()
-    
     
     if (isTextIn(mealtext, excludes)) {
     	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = excludecol
