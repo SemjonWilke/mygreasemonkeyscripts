@@ -14,23 +14,23 @@ function toggleImage() {
   if (lastimage != null) {lastimage.style.filter = "grayscale(0%)"};
   if (!imageshown || lastimage != this) {
     lastimage = this;
-  	imageshown = true;
+    imageshown = true;
     this.style.filter = "grayscale(100%)";
-    modalhtml.innerHTML   = '<br> 							\
-      <div id="show_image_popup">								\
-        <div id="image-show-area">							\
+    modalhtml.innerHTML   = '<br>            \
+      <div id="show_image_popup">            \
+        <div id="image-show-area">           \
           <img id="large-image" src="'+
             this.src+'" alt="'+this.alt+
-            '" width="100%">										  \
-        </div>																	\
+            '" width="100%">                 \
+        </div>                               \
       </div>';
   } else {
-  	imageshown = false;
-		lastimage = null;
+    imageshown = false;
+    lastimage = null;
     modalhtml.innerHTML = '';
   }
   
-  document.getElementById("impressionen").scrollIntoView({behavior: "smooth", block: "start"})//{behavior: "smooth", block: "start", inline: "nearest"});
+  document.getElementById("impressionen").scrollIntoView({behavior: "smooth", block: "start"})
 }
 
 
