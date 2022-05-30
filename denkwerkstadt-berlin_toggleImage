@@ -39,6 +39,8 @@ function toggleImage() {
 }
 
 
+document.getElementsByTagName("nav")[0].style.zIndex = "1";
+
 impressionen = document.getElementById("impressionen");
 impressionen.append(modalhtml);
 restheight = (window.innerHeight - impressionen.clientHeight) - document.getElementsByTagName("nav")[0].clientHeight;
