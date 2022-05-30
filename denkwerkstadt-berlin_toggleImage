@@ -8,6 +8,7 @@
 modalhtml = document.createElement('div');
 imageshown = false;
 lastimage = null;
+restheight = 0;
 
 
 function toggleImage() {
@@ -19,9 +20,13 @@ function toggleImage() {
     modalhtml.innerHTML   = '<br>            \
       <div id="show_image_popup">            \
         <div id="image-show-area">           \
-          <img id="large-image" src="'+
-            this.src+'" alt="'+this.alt+
-            '" width="100%">                 \
+          <center>                           \
+            <img id="large-image"            \
+              src="'+ this.src +
+              '" alt="'+ this.alt +
+              '" height="' + restheight +
+              '">                            \
+          </center>                          \
         </div>                               \
       </div>';
   } else {
@@ -36,6 +41,7 @@ function toggleImage() {
 
 impressionen = document.getElementById("impressionen");
 impressionen.append(modalhtml);
+restheight = (window.innerHeight - impressionen.clientHeight) - document.getElementsByTagName("nav")[0].clientHeight;
 
 images = document.getElementsByClassName('picture');
 images[0].style.maxHeight = "150px";
