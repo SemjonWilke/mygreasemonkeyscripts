@@ -8,7 +8,9 @@
 maybe = ["fleisch", "Fleisch", "Roulade", "roulade", "braten", "Braten", "würstchen", "Würstchen", "Knacker", "knacker",
          "con Carne", "Kassler", "kassler", "Jäger", "Jagd", "steak", "Steak", "Hähnchen", "Hühn", "Hahn", "kalb", "Kalb",
          "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse", "frikassee", "Frikassee",
-         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle", "Pulled Pork", "fisch", "Fisch"]
+         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle", "Pulled Pork", "fisch", "Fisch", "Klops", "klops",
+         "Hecht", "hecht", "Speck", "speck", "Bulette", "Matjes", "matjes", "Barsch", "barsch", "Salami", "salami", "Zander", "zander",
+				 "Eisbein", "eisbein", "Gulasch", "gulasch", "Huhn", "huhn" ]
 never = ["Seniorenportion", "Baguettes", "Dessert", "XXL", "Salat", "Krustenbrot", "Kalt", "Glas", "Mischbrot"]
 excludes = ["gebraten"]
 
@@ -35,7 +37,6 @@ function getHolzkeToday(a, n) {
   return ( Math.floor(Math.floor(Date.now() / 1000) / 86400) * 86400 ) - 7200
 }
 
-
 const collection = document.getElementsByClassName("articleGrid meal");
 removelist = []
 for (const element in collection) {
@@ -48,6 +49,7 @@ for (const element in collection) {
       removelist.push(element)
     	collection[element].getElementsByClassName("cHead")[0].childNodes[0].style.backgroundColor = nevercol
     	collection[element].getElementsByClassName("cBody grey")[0].style.backgroundColor = nevercol
+
       continue;
     }
     
@@ -62,3 +64,28 @@ for (const element in collection) {
     }
   }
 }
+
+day = 86400
+today = window.location.href.split('t=')
+if (today.length == 1) {
+  today[0] = today[0] + "?"
+  today.push(getHolzkeToday())
+}
+
+yesterday = parseInt(today[1]) - day
+tomorrow = parseInt(today[1]) + day
+if ((((parseInt(today[1]) - 1663279200)/day)%7) == 0) {
+  tomorrow = tomorrow + (2 * day)
+}
+if ((((parseInt(today[1]) - 1662933600)/day)%7) == 0) {
+  yesterday = yesterday - (2 * day)
+}
+nextweek = parseInt(today[1]) + (7 * day)
+lastweek = parseInt(today[1]) - (7 * day)
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === "KeyA") window.location.assign(today[0] + "t=" + yesterday);
+  else if (e.code === "KeyD") window.location.assign(today[0] + "t=" + tomorrow);
+  else if (e.code === "KeyW") window.location.assign(today[0] + "t=" + lastweek);
+  else if (e.code === "KeyS") window.location.assign(today[0] + "t=" + nextweek);
+});
