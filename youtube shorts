@@ -1,0 +1,95 @@
+// ==UserScript==
+// @name     youtube shorts
+// @version  1
+// @include  *youtube.com/*
+// @icon     https://www.youtube.com/s/desktop/790cf77f/img/favicon.ico
+// @run-at   document-start
+// ==/UserScript==
+
+
+//-------------------------
+//stop on change tab:
+ 
+var elems
+var replay = []
+
+document.addEventListener('blur', (e) => {
+	elems = document.querySelectorAll("video, audio");
+	[].forEach.call(elems, function(elem) {
+    elem.muted = true;
+    if (!elem.paused) {
+      replay.push(elem)
+    }
+    elem.pause();
+  });
+});
+
+
+document.addEventListener('focus', (e) => {
+	[].forEach.call(elems, function(elem) {
+    elem.muted = false;
+  });
+  
+	[].forEach.call(replay, function(elem) {
+    elem.play();
+  });
+  replay = []
+});
+
+//-------------------------
+// add "open in new tab" menu entry
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+
+let newTab = document.createElement("div")
+newTab.classList.add('ytp-menuitem')
+newTab.setAttribute('role', 'menuitem')
+newTab.setAttribute('aria-haspopup', 'false')
+newTab.setAttribute('tabindex', '0')
+let newTabSvgPath = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+newTabSvgPath.setAttribute("d","M16 7l-5-6v3c-3 0-6 3-6 6c0 2 1 4 3 5c-0-0-1-1-1-2c0-2 1-4 4-4l0 4Z");
+newTabSvgPath.setAttribute("fill", "white")
+let newTabSvg = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+newTabSvg.setAttribute("fill", "none")
+newTabSvg.setAttribute("height", "24")
+newTabSvg.setAttribute("viewBox","0 0 24 24")
+newTabSvg.setAttribute("width","24")
+newTabSvg.append(newTabSvgPath)
+let newTabIcon = document.createElement("div")
+newTabIcon.classList.add('ytp-menuitem-icon')
+newTabIcon.append(newTabSvg)
+newTab.append(newTabIcon)
+let newTabLabel = document.createElement("div")
+newTabLabel.classList.add('ytp-menuitem-label')
+newTabLabel.innerHTML += 'In neuem Tab öffnen'
+newTab.append(newTabLabel)
+let newTabContent = document.createElement("div")
+newTabContent.classList.add('ytp-menuitem-content')
+newTab.append(newTabContent)
+
+newTab.addEventListener('click', function() {
+  destination = 'https://www.youtube.com/watch?v=' + window.location.pathname.split('/').slice(-1)
+  window.open(destination, '_blank').focus();
+})
+
+function prependNewTab(event) {
+  
+  delay(10).then(() => {
+    let rcmenu = document.getElementsByClassName('ytp-popup ytp-contextmenu')
+    let m = rcmenu[0].getElementsByClassName('ytp-panel-menu')[0]
+
+    let h = parseInt(((Math.ceil(parseFloat(rcmenu[0].style.height) / 7)) * 9))+1 + "px"
+    rcmenu[0].style.height = h
+    rcmenu[0].getElementsByClassName('ytp-panel')[0].style.height = h
+    m.style.height = h
+
+    m.prepend(newTab)
+    amentry = true
+    document.removeEventListener("contextmenu", prependNewTab)
+  });
+}
+
+//not easy to restrict to shorts
+document.addEventListener("contextmenu", prependNewTab);
