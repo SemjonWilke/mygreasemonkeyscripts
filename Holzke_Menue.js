@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name     Holzke Menue
+// @name     Holzke_Menue
 // @version  1
 // @grant    none
 // @include  https://30.bestellung-holzke-menue.de/de/menu/*
@@ -19,7 +19,7 @@ function isTextIn(mealparam, text) {
   result = false
   
   for (const meal in text) {
-    result = result || mealparam.includes(text[meal])
+    result = result || mealparam.toLowerCase().includes(text[meal])
     if (result) {
       return result
     }
@@ -30,17 +30,11 @@ function isTextIn(mealparam, text) {
 
 // ----------------------------------------------------------
 
-maybe = ["fleisch", "Fleisch", "Roulade", "roulade", "braten", "Braten", "würstchen", "Würstchen", "Knacker", "knacker",
-         "con Carne", "Kassler", "kassler", "Jäger", "Jagd", "steak", "Steak", "Hähnchen", "Hühn", "Hahn", "kalb", "Kalb",
-         "Pute", "Schwein", "Rind", "Schinken", "schinken", "Wurst", "wurst", "Königsberger Klopse", "frikassee", "Frikassee",
-         "Hirtenrolle", "lachs", "Lachs", "forelle", "Forelle", "Frikadelle", "Pulled Pork", "fisch", "Fisch", "Klops", "klops",
-         "Hecht", "hecht", "Speck", "speck", "Bulette", "Matjes", "matjes", "Barsch", "barsch", "Salami", "salami", "Zander", "zander",
-				 "Eisbein", "eisbein", "Gulasch", "gulasch", "Huhn", "huhn", "Rippchen", "rippchen" ]
-excludes = ["gebraten", "Gebraten"]
-
-maybecol = "#eeee55" // yellow
-goodcol = "#88ff88" // pink
-excludecol = "#ffccff" // pink
+meat = ["braten","bulette","con carne","eisbein","fleisch","frikadelle","frikassee","geflügel","gulasch","hahn","hähnchen",
+        "hirtenrolle","huhn","hühn","jagd","jäger","kalb","kassler","klops","knacker","königsberger klopse", "pulled pork",
+        "pute","rind","rippchen","roulade","salami","schinken","schwein","speck","steak","wiener","wurst","würstchen"]
+fish = ["barsch","fisch","forelle","hecht","lachs","matjes","zander"]
+excludes = ["gebraten"]
 
 meals = document.getElementsByTagName("mealtxt")
 for (const meal in meals) {
@@ -48,11 +42,13 @@ for (const meal in meals) {
   mtext = m.innerText.split(/\r?\n|\r|\n/g)[0].trim();
 
 	if (isTextIn(mtext, excludes)) {
-  	m.parentElement.parentElement.style.backgroundColor = excludecol
-  } else if (isTextIn(mtext, maybe)) {
-  	m.parentElement.parentElement.style.backgroundColor = maybecol
+  	m.parentElement.parentElement.style.backgroundColor = "#ffccff"
+  } else if (isTextIn(mtext, meat)) {
+  	m.parentElement.parentElement.style.backgroundColor = "#ffaaaa"
+  } else if (isTextIn(mtext, fish)) {
+  	m.parentElement.parentElement.style.backgroundColor = "#eeee55"
   } else {
-  	m.parentElement.parentElement.style.backgroundColor = goodcol
+  	m.parentElement.parentElement.style.backgroundColor = "#88ff88"
   }
   m.parentElement.parentElement.style.border = "0px"
 }
