@@ -61,14 +61,22 @@ var defaultOptions = {
 
 playmode = document.getElementsByClassName('play-mode')
 playmode[0].style.display="flex"
-console.log(playmode[0])
 playmode[0].firstChild.style.margin="auto"
 
 window.addEventListener('load', function() {
     records = document.getElementsByClassName('flex-box robots-container flex-wrap')[0].getElementsByClassName('record')
     robots = document.getElementsByClassName('robot')
     reset = document.getElementsByClassName("redo fa fa-refresh")[0]
-  
+
+    robots[0].style.textAlign="center";
+  	robots[0].innerHTML="A";
+    robots[1].style.textAlign="center";
+  	robots[1].innerHTML="S";
+    robots[2].style.textAlign="center";
+  	robots[2].innerHTML="D";
+    robots[3].style.textAlign="center";
+  	robots[3].innerHTML="W";
+
     document.addEventListener('keydown', (e) => {
         if (e.code === "Digit1") simulate(records[0], "click")
         else if (e.code === "Digit2") simulate(records[1], "click")
@@ -88,4 +96,29 @@ window.addEventListener('load', function() {
         newdiv.innerHTML = "<center>"+(i+1)+"</center>"
         records[i].appendChild(newdiv)
     }
+
+  	setTimeout(() => {
+      document.getElementById("rufous-sandbox").remove();
+  		document.querySelector('[title="Twitter settings iframe"]').remove()
+
+			var iframe = document.createElement("iframe");
+      iframe.src = "http://www.robotreboot.com/highscore";
+      iframe.width = document.body.offsetWidth;
+      iframe.height = window.innerHeight - document.body.offsetHeight;
+      document.body.appendChild(iframe);
+      document.getElementById("footer").remove()
+
+
+			iframe.addEventListener('load', () => {
+        iframedoc = iframe.contentWindow.document
+        iframedoc.getElementsByClassName("content-container")[0].style.paddingTop = "0px";
+        console.log(iframedoc.getElementsByClassName("nav-container"))
+        iframedoc.getElementsByClassName("nav-container")[0].remove()
+        iframedoc.getElementById("rufous-sandbox").remove()
+        iframedoc.querySelector('[title="Twitter settings iframe"]').remove()
+        iframedoc.getElementById("fb_reset").remove()
+      }, true)
+      //navBar.parentNode.removeChild(navBar);
+    }, 1000);
+
 }, false);
